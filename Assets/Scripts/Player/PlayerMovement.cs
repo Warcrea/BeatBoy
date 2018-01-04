@@ -30,13 +30,5 @@ public class PlayerMovement : MonoBehaviour {
             transform.rotation = (newRotation);
         }
 
-        float rightStickx = Input.GetAxis("Right_Horizontal");
-        float rightSticky = Input.GetAxis("Right_Vertical");
-
-        float angle = Mathf.Atan2(rightStickx, rightSticky) * Mathf.Rad2Deg;
-        if (rightStickx != sensitivity || rightSticky != sensitivity) {
-            transform.rotation = Quaternion.EulerAngles(0.0f, 0.0f, angle);
-            // transform.rotation = Quaternion.Angle()
-        }
     }
 }

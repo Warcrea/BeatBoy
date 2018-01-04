@@ -83,6 +83,7 @@ public class TrackManager : MonoBehaviour {
     }
 
     void IncrementLead() {
+        Debug.Log("Lead tracks" + leadTracks.Count + ", current lead" + currentLead);
         previousLead = currentLead;
         if (currentLead == leadTracks.Count - 1) {
             currentLead = 0;

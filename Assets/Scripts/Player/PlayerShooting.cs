@@ -17,9 +17,11 @@ public class PlayerShooting : MonoBehaviour {
     float effectsDisplayTime = 0.05f;
     public float range = 100f;
     int shootableMask;
+    public int laserDamage;
 
     //Rockets
     public GameObject rocketPrefab;
+    public int rocketDamage;
 
     //Misc references
     private GameObject projectilesHolder;
@@ -55,6 +57,7 @@ public class PlayerShooting : MonoBehaviour {
 
     public void SetCurrentWeapon(int weaponId) {
         currentWeapon = (Weapon)weaponId;
+        Debug.Log(currentWeapon);   
     }
 
     public void RegisterForOneTrack(string previousEventId, string eventId) {
@@ -85,7 +88,8 @@ public class PlayerShooting : MonoBehaviour {
     }
 
     void ShootHomingRocket() {
-        Instantiate(rocketPrefab, transform.position, transform.rotation, projectilesHolder.transform);
+        GameObject rocket = Instantiate(rocketPrefab, transform.position, transform.rotation, projectilesHolder.transform);
+        rocket.GetComponent<HomingMissile>().SetDamage(2);
     }
 
     void ShootForwardLaser(int power) {
@@ -110,7 +114,7 @@ public class PlayerShooting : MonoBehaviour {
                 GameObject hitTarget = hit.rigidbody.gameObject;
                 Destroyable targetDestroyable = hitTarget.GetComponent<Destroyable>();
                 if (targetDestroyable != null) {
-                    targetDestroyable.Destroy();
+                    targetDestroyable.TakeDamage(laserDamage);
                 }
             }
         }

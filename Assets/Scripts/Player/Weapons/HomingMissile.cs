@@ -26,6 +26,7 @@ public class HomingMissile : MonoBehaviour {
 
     private float seekLength = 0.5f;
     private float timer;
+    private int damage;
 
     void Start() {
         //target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -34,6 +35,10 @@ public class HomingMissile : MonoBehaviour {
         state = State.seek;
         speed = launchSpeed;
         target = null;
+    }
+
+    public void SetDamage(int damage) {
+        this.damage = damage;
     }
 
     void FixedUpdate() {
@@ -99,18 +104,16 @@ public class HomingMissile : MonoBehaviour {
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance && curDistance <= maxDistance) {
-                Debug.Log(curDistance);
                 closest = go;
                 distance = curDistance;
             }
-        }
-        if (closest == null) Debug.Log("Couldn't find an enemy");
+        }   
         return closest;
     }
 
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Enemy") {
-            col.gameObject.GetComponent<Destroyable>().Destroy();
+            col.gameObject.GetComponent<Destroyable>().TakeDamage(damage);
             //add an explosion or something
             Destroy(gameObject);
         }

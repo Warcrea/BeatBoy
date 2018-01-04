@@ -11,8 +11,58 @@ MonoBehaviour:
   m_Script: {fileID: -1223223985, guid: aa81bbec85a3f423193272a7c6154986, type: 3}
   m_Name: BackingTrack
   m_EditorClassIdentifier: 
-  mEventID: 
-  mEventList: []
+  mEventID: SpawnWave
+  mEventList:
+  - mStartSample: 769745
+    mEndSample: 769745
+  - mStartSample: 865963
+    mEndSample: 865963
+  - mStartSample: 962181
+    mEndSample: 962181
+  - mStartSample: 1058400
+    mEndSample: 1058400
+  - mStartSample: 1154618
+    mEndSample: 1154618
+  - mStartSample: 1250836
+    mEndSample: 1250836
+  - mStartSample: 1347054
+    mEndSample: 1347054
+  - mStartSample: 1443272
+    mEndSample: 1443272
+  - mStartSample: 1539490
+    mEndSample: 1539490
+  - mStartSample: 1635709
+    mEndSample: 1635709
+  - mStartSample: 1731927
+    mEndSample: 1731927
+  - mStartSample: 1828145
+    mEndSample: 1828145
+  - mStartSample: 1924363
+    mEndSample: 1924363
+  - mStartSample: 2020581
+    mEndSample: 2020581
+  - mStartSample: 2116800
+    mEndSample: 2116800
+  - mStartSample: 2213018
+    mEndSample: 2213018
+  - mStartSample: 2309236
+    mEndSample: 2309236
+  - mStartSample: 2405454
+    mEndSample: 2405454
+  - mStartSample: 2501672
+    mEndSample: 2501672
+  - mStartSample: 2597890
+    mEndSample: 2597890
+  - mStartSample: 2694109
+    mEndSample: 2694109
+  - mStartSample: 2790327
+    mEndSample: 2790327
+  - mStartSample: 2886545
+    mEndSample: 2886545
+  - mStartSample: 2982763
+    mEndSample: 2982763
+  - mStartSample: 3078981
+    mEndSample: 3078981
   _SerializedPayloadTypes: []
   _AssetPayloads: []
   _AssetPayloadIdxs: 
