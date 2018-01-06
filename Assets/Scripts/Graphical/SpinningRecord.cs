@@ -13,7 +13,8 @@ public class SpinningRecord : MonoBehaviour {
     private bool lastRotatedUp = false;
     private Quaternion origRotation;
 
-	
+    public bool isSpinning;
+
     void Awake() {
         foreach (Transform child in transform) {
             if (child.CompareTag("Record Base")) {
@@ -25,13 +26,20 @@ public class SpinningRecord : MonoBehaviour {
         }
         origRotation = recordBase.rotation;
     }
+
+    public void SetSpinning(bool isSpinning) {
+        this.isSpinning = isSpinning;
+    }
+
 	// Update is called once per frame
 	void Update () {
-        recordLabel.Rotate(Vector3.forward * labelRotationSpeed * Time.deltaTime);
-        if (lastRotatedUp)
-            recordBase.Rotate(-Vector3.forward * baseRotationSpeed * Time.deltaTime);
-        else
-            recordBase.Rotate(Vector3.forward * baseRotationSpeed * Time.deltaTime);
-        lastRotatedUp = !lastRotatedUp;
+        if (isSpinning) {
+            recordLabel.Rotate(Vector3.forward * labelRotationSpeed * Time.deltaTime);
+            if (lastRotatedUp)
+                recordBase.Rotate(-Vector3.forward * baseRotationSpeed * Time.deltaTime);
+            else
+                recordBase.Rotate(Vector3.forward * baseRotationSpeed * Time.deltaTime);
+            lastRotatedUp = !lastRotatedUp;
+        }
     }
 }

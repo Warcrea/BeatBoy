@@ -136,6 +136,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 4
   currentHealth: 0
+  scoreOnKill: 5
 --- !u!114 &114215336843469864
 MonoBehaviour:
   m_ObjectHideFlags: 1

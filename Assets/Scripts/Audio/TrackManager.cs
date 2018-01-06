@@ -8,99 +8,73 @@ using UnityEngine;
 public class TrackManager : MonoBehaviour {
 
     private GameObject player;
-    public List<Track> beatTracks;
-    public List<Track> leadTracks;
-    public int currentBeat, previousBeat;
-    public int currentLead, previousLead;
+    private RecordManager vinylManager;
+    public List<AudioSource> tracks;
+    public int currentTrack, previousTrack;
+
+
     public Dictionary<string, AudioSource> beatSources = new Dictionary<string, AudioSource>();
     public Dictionary<string, AudioSource> leadSources = new Dictionary<string, AudioSource>();
+
 
     // Use this for initialization
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
-        AudioSource[] beatSourceArray = GameObject.FindGameObjectWithTag("Beats").GetComponents<AudioSource>();
-        foreach (AudioSource source in beatSourceArray) {
-            beatSources.Add(source.clip.name, source);
-        }
-
-        AudioSource[] leadSourceArray = GameObject.FindGameObjectWithTag("Leads").GetComponents<AudioSource>();
-        foreach (AudioSource source in leadSourceArray) {
-            leadSources.Add(source.clip.name, source);
-        }
-
-        foreach (Track track in beatTracks){
-            AudioSource src = null;
-            Debug.Log(track.audioClipName);
-            bool success = beatSources.TryGetValue(track.audioClipName, out src);
-            if (success) {
-                track.audioSource = src;
-                track.audioSource.mute = true;
-            }
-            else
-                Debug.Log("Couldn't find audio source for " + track.audioClipName + " | " + track.name);
-        }
-
-        foreach (Track track in leadTracks) {
-            AudioSource src;
-            bool success = leadSources.TryGetValue(track.audioClipName, out src);
-            if (success)
-                track.audioSource = src;
-            else
-                Debug.Log("Couldn't find audio source for " + track.audioClipName + " | " + track.name);
-        }
-
-        MuteTracks(beatTracks, currentBeat);
-        MuteTracks(leadTracks, currentLead);
+        vinylManager = GameObject.Find("VinylManager").GetComponent<RecordManager>();
+        MuteTracks(currentTrack);
+        vinylManager.setSelected(currentTrack);
     }
 
+    /*
     public string GetCurrentBeatEvent() {
         return beatTracks[currentBeat].eventId;
     }
+    */
 
     // Update is called once per frame
     void Update() {
         if (Input.GetMouseButtonDown(0)) {
-            IncrementLead();
-            //MuteTracks(leadTracks, currentLead);
-            //player.GetComponent<PlayerShooting>().RegisterForOneTrack(leadTracks[previousLead].eventId, leadTracks[currentLead].eventId);
-            player.GetComponent<PlayerShooting>().SetCurrentWeapon(currentLead);
+            IncrementTrack();
+            MuteTracks(currentTrack);
+            player.GetComponent<PlayerShooting>().SetCurrentWeapon(currentTrack);
+            vinylManager.setSelected(currentTrack);
         }
         if (Input.GetMouseButtonDown(1)) {
-            IncrementBeat();
-            MuteTracks(beatTracks, currentBeat);
-       
-            player.GetComponent<PlayerShooting>().RegisterForOneTrack(beatTracks[previousBeat].eventId, beatTracks[currentBeat].eventId);
+            DecrementTrack();
+            MuteTracks(currentTrack);
+            player.GetComponent<PlayerShooting>().SetCurrentWeapon(currentTrack);
+            vinylManager.setSelected(currentTrack);
         }
     }
 
-    void IncrementBeat() {
-        previousBeat = currentBeat;
-        if (currentBeat == beatTracks.Count - 1) {
-            currentBeat = 0;
-        } else {
-            currentBeat++;
-        }
-    }
-
-    void IncrementLead() {
-        Debug.Log("Lead tracks" + leadTracks.Count + ", current lead" + currentLead);
-        previousLead = currentLead;
-        if (currentLead == leadTracks.Count - 1) {
-            currentLead = 0;
+    void IncrementTrack() {
+        previousTrack = currentTrack;
+        if (currentTrack == tracks.Count - 1) {
+            currentTrack = 0;
         }
         else {
-            currentLead++;
+            currentTrack++;
+        }
+    }
+
+    void DecrementTrack() {
+        previousTrack = currentTrack;
+        if (currentTrack == 0) {
+            currentTrack = tracks.Count-1;
+        }
+        else {
+            currentTrack--;
         }
     }
 
 
-    void MuteTracks(List<Track> trackList, int index) {
-        for (int i = 0; i < trackList.Count; i++) {
+    void MuteTracks(int index) {
+        for (int i = 0; i < tracks.Count; i++) {
             if (i != index) {
-                trackList[i].audioSource.mute = true;
+                tracks[i].mute = true;
             }
             else {
-                trackList[i].audioSource.mute = false;
+                tracks[i].mute = false;
             }
         }
     }

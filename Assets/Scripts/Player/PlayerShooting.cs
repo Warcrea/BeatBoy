@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SonicBloom.Koreo;
 using UnityEngine;
 
-public enum Weapon { Laser, HomingRocket};
+public enum Weapon { HomingRocket, Laser, Bullet };
 
 public class PlayerShooting : MonoBehaviour {
 
@@ -23,15 +23,20 @@ public class PlayerShooting : MonoBehaviour {
     public GameObject rocketPrefab;
     public int rocketDamage;
 
+    //Bullets
+    public GameObject bulletPrefab;
+    public int bulletDamage;
+
     //Misc references
     private GameObject projectilesHolder;
+    private Transform shootDirection;
 
     private Weapon currentWeapon;
 
     void Start () {
-        currentWeapon = (Weapon)0;
+        currentWeapon = (Weapon)1;
         TrackManager trackManager = GameObject.Find("Audio Management").GetComponent<TrackManager>();
-        RegisterForOneTrack(null, trackManager.GetCurrentBeatEvent());
+        Koreographer.Instance.RegisterForEvents("Beat", FireEvent);
 
         shootableMask = LayerMask.GetMask("Shootable");
         forwardParticles = GetComponent<ParticleSystem>();
@@ -40,6 +45,7 @@ public class PlayerShooting : MonoBehaviour {
         forwardBeamLine.endWidth = forwardBeamWidth * beamHitboxRatio;
 
         projectilesHolder = GameObject.Find("Projectiles");
+        shootDirection = gameObject.transform.GetChild(0);
     }
 	
 	// Update is called once per frame
@@ -53,19 +59,16 @@ public class PlayerShooting : MonoBehaviour {
         if (effectTimer >= effectsDisplayTime) {
             DisableEffects();
         }
-	}
+
+        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 dir = Input.mousePosition - pos;
+        float angle = (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg) - 90;
+        shootDirection.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
 
     public void SetCurrentWeapon(int weaponId) {
         currentWeapon = (Weapon)weaponId;
         Debug.Log(currentWeapon);   
-    }
-
-    public void RegisterForOneTrack(string previousEventId, string eventId) {
-        if (previousEventId != null) {
-            Koreographer.Instance.UnregisterForEvents(previousEventId, FireEvent);
-        }
-
-        Koreographer.Instance.RegisterForEvents(eventId, FireEvent);
     }
 
     public void DisableEffects() {
@@ -85,11 +88,21 @@ public class PlayerShooting : MonoBehaviour {
         else if (currentWeapon == Weapon.HomingRocket) {
             ShootHomingRocket();
         }
+        else if (currentWeapon == Weapon.Bullet) {
+            ShootIonBullet();
+        }
     }
 
     void ShootHomingRocket() {
         GameObject rocket = Instantiate(rocketPrefab, transform.position, transform.rotation, projectilesHolder.transform);
-        rocket.GetComponent<HomingMissile>().SetDamage(2);
+        rocket.GetComponent<HomingMissile>().SetDamage(4);
+    }
+
+    void ShootIonBullet() {
+        forwardParticles.Stop();
+        forwardParticles.Play();
+        GameObject bullet = Instantiate(bulletPrefab, transform.position + shootDirection.up, shootDirection.rotation, projectilesHolder.transform);
+        bullet.GetComponent<Bullet>().SetDamage(2);
     }
 
     void ShootForwardLaser(int power) {
@@ -103,10 +116,10 @@ public class PlayerShooting : MonoBehaviour {
 
         forwardBeamLine.enabled = true;
         forwardBeamLine.positionCount = 2;
-        forwardBeamLine.SetPosition(0, transform.position + transform.up);
-        forwardBeamLine.SetPosition(1, transform.up * range + transform.position);
+        forwardBeamLine.SetPosition(0, transform.position + shootDirection.up);
+        forwardBeamLine.SetPosition(1, shootDirection.up * range + transform.position);
         
-        RaycastHit2D[] hits = (Physics2D.CircleCastAll(transform.position, adjustedWidth, transform.up, range, shootableMask));
+        RaycastHit2D[] hits = (Physics2D.CircleCastAll(transform.position, adjustedWidth, shootDirection.up, range, shootableMask));
 
         foreach(RaycastHit2D hit in hits) {
             if (hit.collider != null) {

@@ -23,7 +23,7 @@ public class DumbMissile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Player") {
-            col.gameObject.GetComponent<Destroyable>().TakeDamage(2);
+            col.gameObject.GetComponent<Destroyable>().TakeDamage(1);
             GetComponent<Destroyable>().Destroy();
         }
     }

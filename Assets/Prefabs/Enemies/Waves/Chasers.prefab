@@ -489,6 +489,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 2
   currentHealth: 0
+  scoreOnKill: 2
 --- !u!114 &114074619069400056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -562,6 +563,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 2
   currentHealth: 0
+  scoreOnKill: 2
 --- !u!114 &114332357631030574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -640,6 +642,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 2
   currentHealth: 0
+  scoreOnKill: 2
 --- !u!114 &114654737881520812
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -672,6 +675,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 2
   currentHealth: 0
+  scoreOnKill: 2
 --- !u!114 &114781163726453560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -729,6 +733,7 @@ MonoBehaviour:
     type: 2}
   startHealth: 2
   currentHealth: 0
+  scoreOnKill: 2
 --- !u!212 &212255917354028442
 SpriteRenderer:
   m_ObjectHideFlags: 1

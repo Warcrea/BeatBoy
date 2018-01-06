@@ -16,7 +16,7 @@ public class EnemyManager : MonoBehaviour {
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         enemyParent = GameObject.Find("Enemies").transform;
-        Koreographer.Instance.RegisterForEvents("SpawnWave", SpawnEvent);
+        Koreographer.Instance.RegisterForEvents("SpawnBeats", SpawnEvent);
         wavesSinceLast = waveFrequency;
     }
 

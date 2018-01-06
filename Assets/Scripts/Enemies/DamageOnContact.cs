@@ -9,8 +9,11 @@ public class DamageOnContact : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Player") {
             //Do damage
-            if (selfDestruct) {
+            if (col.gameObject.GetComponent<Destroyable>()) {
                 col.gameObject.GetComponent<Destroyable>().TakeDamage(1);
+            }
+
+            if (selfDestruct) {
                 GetComponent<Destroyable>().Destroy();
             }
         }
